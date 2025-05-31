@@ -9,7 +9,10 @@ namespace djinn
 
 struct Velocity : public Component
 {
+    template<typename... Args>
+    Velocity(Args... args);
 
+    /* Position operator*(Time t) */
 };
 
 }

@@ -11,6 +11,8 @@ struct Position : public Component
 {
     template<typename... Args>
     Position(Args... args);
+
+    Position operator+(const Position& other);
 };
 
 }
