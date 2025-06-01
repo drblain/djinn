@@ -2,30 +2,31 @@
 
 #include <array>
 
+#include "djinn/Time.hpp"
 #include "djinn/Component.hpp"
 #include "djinn/components/SpatialComponents.hpp"
 
-// TODO define operator * for multiplying by a time and giving a position
-
 namespace djinn
 {
-
-struct Time : public Component
-{
-    double s_;
-};
-
+    
 struct Velocity : public Component
 {
-    std::array<double, 3> scomponents_;
-    double& sx_;
-    double& sy_;
-    double& sz_;
+    double sx_;
+    double sy_;
+    double sz_;
 
-    Velocity(double sx, double sy, double sz);
-    Velocity(const Velocity& other);
-
-    Position operator*(const Time& other) const;
+    Velocity(double sx, double sy, double sz):
+        sx_(sx), sy_(sy), sz_(sz)
+    {}
 };
+
+Position operator*(const Velocity& lhs, const TimeDuration& rhs)
+{
+    return Position(
+        lhs.sx_ * rhs.s_,
+        lhs.sy_ * rhs.s_,
+        lhs.sz_ * rhs.s_
+    );
+}
 
 }

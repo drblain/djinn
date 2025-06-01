@@ -1,9 +1,6 @@
 set(djinn_srcs
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/System.cpp
-    
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/components/PhysicsComponents.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/components/SpatialComponents.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/System.cpp)
 
 add_library(djinn
     STATIC

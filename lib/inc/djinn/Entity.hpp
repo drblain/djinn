@@ -53,6 +53,12 @@ public:
     }
 
     template<typename T>
+    inline void removeComponent()
+    {
+        components_.erase(getComponentTypeId<T>());
+    }
+
+    template<typename T>
     inline bool hasComponent()
     {
         return components_.find(getComponentTypeId<T>()) != components_.end();
