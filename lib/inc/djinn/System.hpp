@@ -24,7 +24,7 @@ public:
 
     virtual void update() = 0;
 
-    virtual void render() = 0;
+    inline virtual void render() { /* no rendering by default */ }
 };
 
 } // namespace djinn

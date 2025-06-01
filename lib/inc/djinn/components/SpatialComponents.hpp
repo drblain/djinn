@@ -15,4 +15,9 @@ struct Position : public Component
     Position operator+(const Position& other);
 };
 
+struct Scale : public Component
+{
+
+};
+
 }

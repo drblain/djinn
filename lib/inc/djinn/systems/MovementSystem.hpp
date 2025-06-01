@@ -1,8 +1,14 @@
 #pragma once
 
-#include "System.hpp"
+#include "djinn/System.hpp"
+
+namespace djinn
+{
 
 class MovementSystem : public System
 {
-
+public:
+    void update();
 };
+
+}

@@ -18,6 +18,10 @@ public:
 
     template<typename T, typename... Args>
     T* addSystem(Args... args);
+
+    void update();
+
+    void render();
 };
 
 } // namespace djinn
