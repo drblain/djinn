@@ -14,7 +14,11 @@ typedef size_t ComponentId;
 typedef std::unordered_map<ComponentId, std::unique_ptr<Component>> ComponentMap;
 
 template<typename T>
-ComponentId getComponentTypeId();
+inline ComponentId getComponentTypeId()
+{
+    static const char id;
+    return reinterpret_cast<ComponentId>(&id);
+}
 
 class Component
 {
