@@ -32,11 +32,11 @@ private:
 
 public:
     template<typename T, typename... Args>
-    inline T* addComponent(Args... args)
+    inline T* addComponent(Args&&... args)
     {
         static_assert(std::is_base_of<Component, T>::value, "Template parameter must be of Component type");
         components_[getComponentTypeId<T>()] = std::make_unique<T>(std::forward<Args>(args)...);
-        return components_[getComponentTypeId<T>()].get();
+        return dynamic_cast<T*>(components_[getComponentTypeId<T>()].get());
     }
 
     template<typename T>
@@ -46,7 +46,7 @@ public:
 
         if (comp != components_.end())
         {
-            return comp->second.get();
+            return dynamic_cast<T*>(comp->second.get());
         }
 
         return nullptr;
@@ -68,7 +68,7 @@ public:
     virtual ~EntityManager() = default;
 
     template<typename T, typename... Args>
-    inline T* addEntity(Args... args)
+    inline T* addEntity(Args&&... args)
     {
         static_assert(std::is_base_of<Entity, T>::value, "Template parameter must be of Entity type");
         entities_.push_back(std::make_unique<T>(std::forward<Args>(args)...));

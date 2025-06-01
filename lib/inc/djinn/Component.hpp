@@ -16,7 +16,7 @@ typedef std::unordered_map<ComponentId, std::unique_ptr<Component>> ComponentMap
 template<typename T>
 inline ComponentId getComponentTypeId()
 {
-    static const char id;
+    static const char id = 0;
     return reinterpret_cast<ComponentId>(&id);
 }
 

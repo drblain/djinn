@@ -22,7 +22,7 @@ public:
 
     virtual ~System() = default;
 
-    virtual void update() = 0;
+    virtual void update() { /* no updating by default */ }
 
     inline virtual void render() { /* no rendering by default */ }
 };
