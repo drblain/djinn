@@ -16,6 +16,8 @@ public:
 
     ~Engine();
 
+    void run();
+
     template<typename T, typename... Args>
     inline T* addSystem(Args&&... args)
     {

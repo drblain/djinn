@@ -16,6 +16,11 @@ Engine::~Engine()
     
 }
 
+void Engine::run()
+{
+    // TODO
+}
+
 void Engine::update()
 {
     for (SystemVec::iterator s_iter = systems_.begin(); s_iter != systems_.end(); ++s_iter)

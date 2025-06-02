@@ -6,6 +6,7 @@
 #include "djinn/Engine.hpp"
 #include "djinn/Entity.hpp"
 #include "djinn/System.hpp"
+#include "djinn/Time.hpp"
 
 class PrintPositionSystem : public djinn::System
 {

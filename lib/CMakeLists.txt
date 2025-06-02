@@ -1,9 +1,10 @@
 set(djinn_srcs
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/System.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/System.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Time.cpp)
 
 add_library(djinn
-    STATIC
+    SHARED
     ${djinn_srcs})
 
 target_include_directories(djinn
