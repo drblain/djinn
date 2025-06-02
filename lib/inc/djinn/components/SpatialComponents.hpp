@@ -3,60 +3,43 @@
 #include <array>
 
 #include "djinn/Component.hpp"
+#include "djinn/components/Mixins.hpp"
 
 namespace djinn
 {
 
-struct Scale : public Component
+struct Scale : public DimensionalMixin<Scale>, public Component
 {
-    double hx_;
-    double hy_;
-    double hz_;
-
-    Scale(double h):
-        hx_(h), hy_(h), hz_(h)
-    {}
-    Scale(double hx, double hy, double hz):
-        hx_(hx), hy_(hy), hz_(hz)
-    {}
+    using DimensionalMixin<Scale>::DimensionalMixin;
 };
 
-struct Position : public Component
+struct Position : public DimensionalMixin<Position>, public Component
 {
-    double x_;
-    double y_;
-    double z_;
-
-    Position(double x, double y, double z):
-        x_(x), y_(y), z_(z)
-    {}
+    using DimensionalMixin<Position>::DimensionalMixin;
 };
 
-Position operator+(const Position& lhs, const Position& rhs)
+inline Position operator+(Position lhs, const Position& rhs)
 {
-    return Position(
-        lhs.x_ + rhs.x_,
-        lhs.y_ + rhs.y_,
-        lhs.z_ + rhs.z_
-    );
+    lhs += rhs;
+    return lhs;
 }
 
-Position operator-(const Position& lhs, const Position& rhs)
+inline Position operator-(Position lhs, const Position& rhs)
 {
-    return Position(
-        lhs.x_ - rhs.x_,
-        lhs.y_ - rhs.y_,
-        lhs.z_ - rhs.z_
-    );
+    lhs -= rhs;
+    return lhs;
 }
 
-Position operator*(const Position& lhs, const Scale& rhs)
+inline Position operator*(Position lhs, const Scale& rhs)
 {
-    return Position(
-        lhs.x_ * rhs.hx_,
-        lhs.y_ * rhs.hy_,
-        lhs.z_ * rhs.hz_
-    );
+    lhs.x_ *= rhs.x_;
+    lhs.y_ *= rhs.y_;
+    lhs.z_ *= rhs.z_;
+    return lhs;
+}
+inline Position operator*(const Scale& lhs, Position rhs)
+{
+    return rhs * lhs;
 }
 
 }
