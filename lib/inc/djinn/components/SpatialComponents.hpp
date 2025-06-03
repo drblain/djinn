@@ -11,6 +11,10 @@ namespace djinn
 struct Scale : public DimensionalMixin<Scale>, public Component
 {
     using DimensionalMixin<Scale>::DimensionalMixin;
+
+    Scale(double s):
+        DimensionalMixin(s, s, s)
+    {}
 };
 
 struct Position : public DimensionalMixin<Position>, public Component
