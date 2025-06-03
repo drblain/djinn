@@ -18,18 +18,6 @@ struct Position : public DimensionalMixin<Position>, public Component
     using DimensionalMixin<Position>::DimensionalMixin;
 };
 
-inline Position operator+(Position lhs, const Position& rhs)
-{
-    lhs += rhs;
-    return lhs;
-}
-
-inline Position operator-(Position lhs, const Position& rhs)
-{
-    lhs -= rhs;
-    return lhs;
-}
-
 inline Position operator*(Position lhs, const Scale& rhs)
 {
     lhs.x_ *= rhs.x_;

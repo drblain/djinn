@@ -35,6 +35,24 @@ public:
         return static_cast<Derived&>(*this);
     }
 
+    Derived operator+(const Derived& other)
+    {
+        return Derived(
+            x_ + other.x_,
+            y_ + other.y_,
+            z_ + other.z_
+        );
+    }
+
+    Derived operator-(const Derived& other)
+    {
+        return Derived(
+            x_ - other.x_,
+            y_ - other.y_,
+            z_ - other.z_
+        );
+    }
+
 };
 
 }
