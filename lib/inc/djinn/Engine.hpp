@@ -26,6 +26,8 @@ public:
         return dynamic_cast<T*>(systems_.back().get());
     }
 
+    void input();
+
     void update();
 
     void render();
