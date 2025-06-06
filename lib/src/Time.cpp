@@ -6,7 +6,20 @@ using namespace djinn;
 
 SystemTimePoint TimeStamp::start_time_;
 
-TimeStamp::InitialTimeStamp initial_time_stamp;
+namespace
+{
+// Dummy struct used to set the initial time for the binary
+struct InitialTimeStamp
+{
+    InitialTimeStamp()
+    {
+        TimeStamp::start_time_ = SystemClock::now();
+    }
+};
+
+InitialTimeStamp initial_time_stamp;
+
+} // namespace
 
 TimeStamp::TimeStamp()
 {

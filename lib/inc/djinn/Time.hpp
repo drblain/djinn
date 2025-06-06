@@ -30,15 +30,6 @@ struct TimeStamp
     void setNow();
 
     static TimeStamp now();
-
-    // Dummy struct used to set the initial time for the binary
-    struct InitialTimeStamp
-    {
-        InitialTimeStamp()
-        {
-            TimeStamp::start_time_ = SystemClock::now();
-        }
-    };
 };
 
 inline TimeDuration operator+(const TimeDuration& lhs, const TimeDuration& rhs)
