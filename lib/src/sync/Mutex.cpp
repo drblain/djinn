@@ -78,6 +78,14 @@ void SignalGate::signal()
     cv_.notify_one();
 }
 
+void SignalGate::broadcast()
+{
+    mut_.lock();
+    signaled_ = true;
+    mut_.unlock();
+    cv_.notify_all();
+}
+
 ScopedLock::ScopedLock(Mutex& mut):
     mut_(&mut)
 {
