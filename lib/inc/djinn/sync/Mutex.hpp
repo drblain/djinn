@@ -42,6 +42,8 @@ public:
     void lockAndWait();
 
     void signal();
+
+    void broadcast();
 };
 
 class ScopedLock

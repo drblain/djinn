@@ -1,9 +1,9 @@
 #include <iostream>
+#include <random>
 #include <string>
 
 #include "djinn/sync/ThreadPool.hpp"
 
-/*
 class PrintWork : public djinn::ThreadWork
 {
 private:
@@ -21,24 +21,23 @@ public:
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(t_));
 
-        std::cout << "Work " << this << " printing payload " << str_ << std::endl;
+        std::cout << "Work " << this << " on thread " << std::this_thread::get_id() << " printing payload " << str_ << std::endl;
     }
 };
-*/
+
 int main(int argc, char* argv[])
 {
-    /*
+    
     djinn::ThreadPool * pool = djinn::ThreadPool::GetThreadPool(4);
     int sum = 0;
     for (int i = 0; i < 20; ++i)
     {
-        pool->enqueueWork([]() {
-            
-        });
+        pool->enqueueWork(new PrintWork(std::to_string(i), std::rand() % 100));
         sum += i;
     }
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(sum * 100));
-    */
+    // sometimes hangs?
+    pool->shutdown();
+    
     return 0;
 }
