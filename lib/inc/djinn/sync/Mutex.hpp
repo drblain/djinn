@@ -17,9 +17,9 @@ public:
     Mutex();
     ~Mutex();
 
-    void wait();
+    void acquire();
 
-    void signal();
+    void release();
 };
 
 class SignalGate
@@ -32,7 +32,14 @@ private:
 public:
     SignalGate();
 
-    void waitForSignal();
+    void lock();
+
+    // caller has already called lock
+    void wait();
+
+    void unlock();
+
+    void lockAndWait();
 
     void signal();
 };
@@ -42,12 +49,23 @@ class ScopedLock
 private:
     Mutex* mut_;
 
+    ScopedLock() = delete;
 public:
-    ScopedLock();
     ScopedLock(Mutex& mut);
     ~ScopedLock();
+};
 
-    void operator()(Mutex& mut);
+class ScopedGate
+{
+private:
+    SignalGate* gate_;
+    bool gate_locked_;
+
+    ScopedGate() = delete;
+public:
+    ScopedGate(SignalGate& gate);
+    void wait();
+    ~ScopedGate();
 };
 
 }

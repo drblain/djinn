@@ -15,7 +15,7 @@ Mutex::~Mutex()
 
 }
 
-void Mutex::wait()
+void Mutex::acquire()
 {
     mut_.lock();
     while(is_locked_)
@@ -28,7 +28,7 @@ void Mutex::wait()
     mut_.unlock();
 }
 
-void Mutex::signal()
+void Mutex::release()
 {
     mut_.lock();
     is_locked_ = false;
@@ -44,15 +44,30 @@ SignalGate::SignalGate():
 
 }
 
-void SignalGate::waitForSignal()
+void SignalGate::lock()
 {
     mut_.lock();
+}
+
+void SignalGate::wait()
+{
     while (!signaled_)
     {
         cv_.wait(mut_);
     }
     signaled_ = false;
+}
+
+void SignalGate::unlock()
+{
     mut_.unlock();
+}
+
+void SignalGate::lockAndWait()
+{
+    lock();
+    wait();
+    unlock();
 }
 
 void SignalGate::signal()
@@ -63,30 +78,29 @@ void SignalGate::signal()
     cv_.notify_one();
 }
 
-ScopedLock::ScopedLock():
-    mut_(nullptr)
-{
-
-}
-
 ScopedLock::ScopedLock(Mutex& mut):
     mut_(&mut)
 {
-    mut_->wait();
+    mut_->acquire();
 }
 
 ScopedLock::~ScopedLock()
 {
-    if (mut_) mut_->signal();
+    if (mut_) mut_->release();
 }
 
-void ScopedLock::operator()(Mutex& mut)
+ScopedGate::ScopedGate(SignalGate& gate):
+    gate_(&gate)
 {
-    if (mut_ != &mut)
-    {
-        if (mut_) mut_->signal();
+    gate_->lock();
+}
 
-        mut_ = &mut;
-        mut_->wait();
-    }
+void ScopedGate::wait()
+{
+    gate_->wait();
+}
+
+ScopedGate::~ScopedGate()
+{
+    gate_->unlock();
 }
