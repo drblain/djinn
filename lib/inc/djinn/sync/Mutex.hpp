@@ -17,9 +17,24 @@ public:
     Mutex();
     ~Mutex();
 
-    void Wait();
+    void wait();
 
-    void Signal();
+    void signal();
+};
+
+class SignalGate
+{
+private:
+    std::mutex mut_;
+    std::condition_variable_any cv_;
+    bool signaled_;
+
+public:
+    SignalGate();
+
+    void waitForSignal();
+
+    void signal();
 };
 
 class ScopedLock
@@ -32,7 +47,7 @@ public:
     ScopedLock(Mutex& mut);
     ~ScopedLock();
 
-    void lock(Mutex& mut);
+    void operator()(Mutex& mut);
 };
 
 }

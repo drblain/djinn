@@ -1,17 +1,17 @@
-set(systest_srcs
-    ${CMAKE_CURRENT_SOURCE_DIR}/systest.cpp)
-
 add_executable(systest
-    ${systest_srcs})
+    ${CMAKE_CURRENT_SOURCE_DIR}/systest.cpp)
 
 target_link_libraries(systest
     djinn)
 
-set(timetest_srcs
+add_executable(timetest
     ${CMAKE_CURRENT_SOURCE_DIR}/timetest.cpp)
 
-add_executable(timetest
-    ${timetest_srcs})
-
 target_link_libraries(timetest
+    djinn)
+
+add_executable(threadtest
+    ${CMAKE_CURRENT_SOURCE_DIR}/threadtest.cpp)
+
+target_link_libraries(threadtest
     djinn)

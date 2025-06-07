@@ -15,7 +15,7 @@ Mutex::~Mutex()
 
 }
 
-void Mutex::Wait()
+void Mutex::wait()
 {
     mut_.lock();
     while(is_locked_)
@@ -28,12 +28,39 @@ void Mutex::Wait()
     mut_.unlock();
 }
 
-void Mutex::Signal()
+void Mutex::signal()
 {
     mut_.lock();
     is_locked_ = false;
     cv_.notify_one();
     mut_.unlock();
+}
+
+SignalGate::SignalGate():
+    mut_(),
+    cv_(),
+    signaled_(false)
+{
+
+}
+
+void SignalGate::waitForSignal()
+{
+    mut_.lock();
+    while (!signaled_)
+    {
+        cv_.wait(mut_);
+    }
+    signaled_ = false;
+    mut_.unlock();
+}
+
+void SignalGate::signal()
+{
+    mut_.lock();
+    signaled_ = true;
+    mut_.unlock();
+    cv_.notify_one();
 }
 
 ScopedLock::ScopedLock():
@@ -45,18 +72,21 @@ ScopedLock::ScopedLock():
 ScopedLock::ScopedLock(Mutex& mut):
     mut_(&mut)
 {
-    mut_->Wait();
+    mut_->wait();
 }
 
 ScopedLock::~ScopedLock()
 {
-    if (mut_) mut_->Signal();
+    if (mut_) mut_->signal();
 }
 
-void ScopedLock::lock(Mutex& mut)
+void ScopedLock::operator()(Mutex& mut)
 {
-    if (mut_) mut_->Signal();
+    if (mut_ != &mut)
+    {
+        if (mut_) mut_->signal();
 
-    mut_ = &mut;
-    mut_->Wait();
+        mut_ = &mut;
+        mut_->wait();
+    }
 }

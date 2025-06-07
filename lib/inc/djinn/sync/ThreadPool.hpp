@@ -1,7 +1,9 @@
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <queue>
+#include <thread>
 #include <vector>
 
 #include "djinn/sync/Mutex.hpp"
@@ -20,31 +22,57 @@ public:
 class Thread
 {
 private:
-    ThreadPool* parent_pool_;
+    ThreadPool* parent_;
+    ThreadWork* work_;
+    bool stopped_;
+    std::thread thread_;
+    SignalGate work_gate_;
 
-    void finish(); // return self to available_threads_
 public:
-    void work(std::unique_ptr<ThreadWork> work);
+    Thread(ThreadPool* parent);
+
+    ~Thread();
+
+    void assignWork(ThreadWork* work);
+
+    void executeWork();
+
+    bool stopIssued() const;
+
+    void stopWork();
 };
 
 class ThreadPool
 {
 private:
-    std::queue<std::unique_ptr<ThreadWork>> work_queue_;
-    std::vector<std::unique_ptr<Thread>> threads_;
-    std::vector<Thread*> available_threads_;
+    Mutex pool_mut_;
+    SignalGate thread_gate_;
+    std::queue<ThreadWork*> work_;
+    std::vector<Thread*> threads_;
+    size_t num_threads_;
+    std::thread pool_thread_;
 
-    static Mutex thread_mut_;
+    static ThreadPool* the_pool_;
 
-    ThreadPool();
+
+    ThreadPool(size_t num_threads);
+
+    void addThread(ScopedLock& lock);
+
+    size_t getNumTotalThreads(ScopedLock& lock);
+    size_t getNumAvailThreads(ScopedLock& lock);
+
+    void dispatchWork(ScopedLock& lock, ThreadWork* work);
 
 public:
-    ~ThreadPool();
+    static ThreadPool* GetThreadPool(size_t num_threads = 0);
+    static void sEnqueueWork(ThreadWork* work);
 
-    static ThreadPool* CreateThreadPool();
-    static ThreadPool* CreateThreadPool(size_t num_threads);
+    void monitorWork();
 
-    static void queueWork(std::unique_ptr<ThreadWork> work);
+    void enqueueWork(ThreadWork* work);
+
+    void returnToPool(Thread* thread);
 };
 
 }
