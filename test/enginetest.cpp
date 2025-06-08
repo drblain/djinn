@@ -45,7 +45,7 @@ public:
 
 int main(int argc, char* argv[])
 {
-    djinn::Engine ng;
+    djinn::Engine ng(60, 5);
     ng.addSystem<TestSystem>(ng, "TestSystem1");
     ng.addSystem<TestSystem>(ng, "TestSystem2");
     ng.addSystem<TestSystem>(ng, "TestSystem3");

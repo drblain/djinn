@@ -6,7 +6,9 @@
 
 using namespace djinn;
 
-Engine::Engine():
+Engine::Engine(double tick_rate, uint8_t updates_before_throttle):
+    tick_rate_(tick_rate),
+    updates_before_throttle_(updates_before_throttle),
     stopped_(false)
 {
 
@@ -19,12 +21,7 @@ Engine::~Engine()
 
 void Engine::run()
 {
-    // TODO temp calculation of tick speed
-    const double fps(60.0);
-    const TimeDuration frame_dur{1.0/fps};
-    const TimeDuration tick_dur{frame_dur};
-
-    const uint8_t max_updates_before_throttle(5);
+    const TimeDuration tick_dur{1.0/tick_rate_};
 
     TimeStamp t_start;
     TimeDuration t_accum{0};
@@ -49,7 +46,7 @@ void Engine::run()
         }
 
         // render as often as possible, unless updates are suffering
-        if (num_updates < max_updates_before_throttle)
+        if (num_updates < updates_before_throttle_)
             render();
     }
 }

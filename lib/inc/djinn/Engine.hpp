@@ -12,10 +12,12 @@ class Engine : public EntityManager
 {
 private:
     SystemVec systems_;
+    double tick_rate_;
+    uint8_t updates_before_throttle_;
     bool stopped_;
 
 public:
-    Engine();
+    Engine(double tick_rate = 60.0, uint8_t updates_before_throttle = 5);
 
     ~Engine();
 
