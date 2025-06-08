@@ -18,7 +18,7 @@ typedef size_t SystemId;
 template<typename T>
 inline SystemId getSystemTypeId()
 {
-    static const char id;
+    static const char id = 0;
     return reinterpret_cast<SystemId>(&id);
 }
 

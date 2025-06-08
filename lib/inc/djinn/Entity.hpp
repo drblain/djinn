@@ -21,7 +21,7 @@ typedef size_t EntityId;
 template<typename T>
 inline EntityId getEntityTypeId()
 {
-    static const char id;
+    static const char id = 0;
     return reinterpret_cast<EntityId>(&id);
 }
 
