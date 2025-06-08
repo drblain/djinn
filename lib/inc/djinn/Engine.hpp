@@ -29,8 +29,23 @@ public:
     inline T* addSystem(Args&&... args)
     {
         static_assert(std::is_base_of<System, T>::value, "Template parameter must be of System type");
-        systems_.push_back(std::make_unique<T>(std::forward<Args>(args)...));
-        return dynamic_cast<T*>(systems_.back().get());
+        std::unique_ptr<T> new_sys = std::make_unique<T>(std::forward<Args>(args)...);
+        const DependencyVec& new_deps(new_sys->getDependencies());
+
+        SystemVec::iterator after_pos = systems_.end();
+
+        for (SystemVec::iterator sys_iter = systems_.begin(); sys_iter != systems_.end(); ++sys_iter)
+        {
+            const DependencyVec& deps((*sys_iter)->getDependencies());
+
+            if(std::find(deps.begin(), deps.end(); getSystemTypeId<T>()) != deps.end())
+            {
+                after_pos = sys_iter;
+            }
+        }
+
+        SystemVec::iterator sys_elem = systems_.insert(after_pos, std::move(new_sys));
+        return dynamic_cast<T*>(sys_elem->get());
     }
 
     void input();

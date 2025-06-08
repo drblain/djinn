@@ -7,3 +7,8 @@ System::System(EntityManager& manager):
 {
 
 }
+
+const DependencyVec& System::getDependencies() const
+{
+    return dependencies_;
+}
