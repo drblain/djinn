@@ -15,3 +15,9 @@ add_executable(threadtest
 
 target_link_libraries(threadtest
     djinn)
+
+add_executable(enginetest
+    ${CMAKE_CURRENT_SOURCE_DIR}/enginetest.cpp)
+
+target_link_libraries(enginetest
+    djinn)

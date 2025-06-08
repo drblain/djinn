@@ -3,10 +3,11 @@
 #include <memory>
 #include <vector>
 
-#include "djinn/Entity.hpp"
-
 namespace djinn
 {
+
+class EntityManager;
+class TimeDuration;
 
 class System;
 
@@ -26,7 +27,7 @@ public:
 
     virtual void input() { /* no input processing by default */ }
 
-    virtual void update() { /* no updating by default */ }
+    virtual void update(const TimeDuration& deltaTime) { /* no updating by default */ }
 
     virtual void render() { /* no rendering by default */ }
 };

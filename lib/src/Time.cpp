@@ -21,6 +21,31 @@ InitialTimeStamp initial_time_stamp;
 
 } // namespace
 
+TimeDuration& TimeDuration::operator+=(const TimeDuration& other)
+{
+    s_ += other.s_;
+    return *this;
+}
+
+TimeDuration& TimeDuration::operator-=(const TimeDuration& other)
+{
+    if (s_ > other.s_)
+    {
+        s_ -= other.s_;
+    }
+    else
+    {
+        s_ = 0.0;
+    }
+
+    return *this;
+}
+
+bool TimeDuration::operator>(const TimeDuration& other) const
+{
+    return s_ > other.s_;
+}
+
 TimeStamp::TimeStamp()
 {
     setNow();

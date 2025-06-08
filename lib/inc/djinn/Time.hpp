@@ -14,6 +14,10 @@ struct TimeDuration
 
     TimeDuration(const TimeDuration&) = default;
     TimeDuration& operator=(const TimeDuration&) = default;
+
+    TimeDuration& operator+=(const TimeDuration& other);
+    TimeDuration& operator-=(const TimeDuration& other);
+    bool operator>(const TimeDuration& other) const;
 };
 
 struct TimeStamp

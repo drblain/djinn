@@ -6,10 +6,13 @@
 namespace djinn
 {
 
+class TimeDuration;
+
 class Engine : public EntityManager
 {
 private:
     SystemVec systems_;
+    bool stopped_;
 
 public:
     Engine();
@@ -17,6 +20,8 @@ public:
     ~Engine();
 
     void run();
+
+    void stop();
 
     template<typename T, typename... Args>
     inline T* addSystem(Args&&... args)
@@ -28,7 +33,7 @@ public:
 
     void input();
 
-    void update();
+    void update(const TimeDuration& deltaTime);
 
     void render();
 };
