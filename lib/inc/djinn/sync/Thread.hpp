@@ -20,28 +20,43 @@ public:
 class Thread
 {
 private:
-    ThreadPool* parent_;
-    bool stopped_;
-    std::thread thread_;
+    std::thread* thread_;
 
 public:
-    Thread(ThreadPool* parent);
+    Thread();
 
-    void runWork();
+    virtual ~Thread();
+
+    void create();
+
+    virtual void main() = 0;
 
     void join();
+};
+
+class ThreadWorker : public Thread
+{
+private:
+    ThreadPool* parent_;
+
+public:
+    ThreadWorker(ThreadPool* parent);
+
+    void main();
 };
 
 class ThreadPool
 {
 private:
-    friend class Thread;
+    friend class ThreadWorker;
+
+    typedef std::vector<ThreadWorker*> WorkerVec;
 
     static ThreadPool* the_pool_;
     SignalGate work_gate_;
     std::queue<ThreadWork*> work_queue_;
     Mutex thread_mut_;
-    std::vector<Thread*> threads_;
+    WorkerVec threads_;
     bool stopped_;
 
     ThreadPool(size_t num_threads);

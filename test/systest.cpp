@@ -8,23 +8,6 @@
 #include "djinn/System.hpp"
 #include "djinn/Time.hpp"
 
-class PrintPositionSystem : public djinn::System
-{
-public:
-    PrintPositionSystem(djinn::EntityManager& em):
-        System(em)
-    {}
-
-    void render()
-    {
-        djinn::EntityComponentFn<djinn::Position> fn = [](djinn::Entity& e, djinn::Position& p) {
-            std::cout << "PrintPositionSystem: &e: " << &e << ", &p: " << &p << "\n";
-        };
-
-        manager_.forEachWith<djinn::Position>(fn);
-    }
-};
-
 class PrintVelocitySystem : public djinn::System
 {
 public:
@@ -39,6 +22,26 @@ public:
         };
 
         manager_.forEachWith<djinn::Velocity>(fn);
+    }
+};
+
+class PrintPositionSystem : public djinn::System
+{
+public:
+    PrintPositionSystem(djinn::EntityManager& em):
+        System(em)
+    {
+        // Mimic position depending on changes from velocity
+        addDependencies<PrintVelocitySystem>();
+    }
+
+    void render()
+    {
+        djinn::EntityComponentFn<djinn::Position> fn = [](djinn::Entity& e, djinn::Position& p) {
+            std::cout << "PrintPositionSystem: &e: " << &e << ", &p: " << &p << "\n";
+        };
+
+        manager_.forEachWith<djinn::Position>(fn);
     }
 };
 

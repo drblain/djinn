@@ -1,17 +1,35 @@
-#include "djinn/sync/ThreadPool.hpp"
+#include "djinn/sync/Thread.hpp"
 
 using namespace djinn;
 
 ThreadPool* ThreadPool::the_pool_ = nullptr;
 
-Thread::Thread(ThreadPool* parent):
-    parent_(parent),
-    thread_([this]() { this->runWork(); })
-{
+Thread::Thread():
+    thread_(nullptr)
+{}
 
+Thread::~Thread()
+{
+    if (thread_) delete thread_;
 }
 
-void Thread::runWork()
+void Thread::create()
+{
+    thread_ = new std::thread([this]() { this->main(); });
+}
+
+void Thread::join()
+{
+    if (thread_) thread_->join();
+}
+
+ThreadWorker::ThreadWorker(ThreadPool* parent):
+    parent_(parent)
+{
+    create();
+}
+
+void ThreadWorker::main()
 {
     while (!parent_->stopped() || parent_->hasWork())
     {
@@ -35,11 +53,6 @@ void Thread::runWork()
     }
 
     // become joinable
-}
-
-void Thread::join()
-{
-    thread_.join();
 }
 
 ThreadPool::ThreadPool(size_t num_threads):
@@ -75,7 +88,7 @@ ThreadPool* ThreadPool::GetThreadPool(size_t num_threads_required)
 
 void ThreadPool::addThread()
 {
-    threads_.push_back(new Thread(this));
+    threads_.push_back(new ThreadWorker(this));
 }
 
 void ThreadPool::enqueueWork(ThreadWork* work)
@@ -106,7 +119,7 @@ void ThreadPool::shutdown()
 
     work_gate_.broadcast();
 
-    for (std::vector<Thread*>::iterator thread = threads_.begin();
+    for (WorkerVec::iterator thread = threads_.begin();
          thread != threads_.end(); ++ thread)
     {
         (*thread)->join();

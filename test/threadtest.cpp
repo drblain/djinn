@@ -2,7 +2,7 @@
 #include <random>
 #include <string>
 
-#include "djinn/sync/ThreadPool.hpp"
+#include "djinn/sync/Thread.hpp"
 
 class PrintWork : public djinn::ThreadWork
 {

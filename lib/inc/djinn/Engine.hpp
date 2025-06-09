@@ -30,7 +30,6 @@ public:
     inline T* addSystem(Args&&... args)
     {
         static_assert(std::is_base_of<System, T>::value, "Template parameter must be of System type");
-        std::unique_ptr<T> new_sys = std::make_unique<T>(std::forward<Args>(args)...);
 
         SystemVec::iterator insert_pos = systems_.end();
 
@@ -44,7 +43,7 @@ public:
             }
         }
 
-        SystemVec::iterator sys_elem = systems_.insert(insert_pos, std::move(new_sys));
+        SystemVec::iterator sys_elem = systems_.insert(insert_pos, std::make_unique<T>(std::forward<Args>(args)...));
         return dynamic_cast<T*>(sys_elem->get());
     }
 

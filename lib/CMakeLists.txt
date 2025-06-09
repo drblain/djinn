@@ -4,7 +4,7 @@ set(djinn_srcs
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Time.cpp
     
     ${CMAKE_CURRENT_SOURCE_DIR}/src/sync/Mutex.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/sync/ThreadPool.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/sync/Thread.cpp)
 
 add_library(djinn
     SHARED
