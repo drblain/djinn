@@ -29,20 +29,25 @@ ThreadWorker::ThreadWorker(ThreadPool* parent):
     create();
 }
 
+bool ThreadWorker::stopped()
+{
+    return parent_->stopped();
+}
+
 void ThreadWorker::main()
 {
-    while (!parent_->stopped() || parent_->hasWork())
+    while (!stopped() || parent_->hasWork())
     {
         ThreadWork* work = nullptr;
 
         {
             ScopedGate gate(parent_->work_gate_);
-            while (!parent_->hasWork() && !parent_->stopped())
+            while (!parent_->hasWork() && !stopped())
             {
                 gate.wait();
             }
 
-            if (parent_->stopped() && !parent_->hasWork()) return;
+            if (stopped() && !parent_->hasWork()) return;
 
             work = parent_->work_queue_.front();
             parent_->work_queue_.pop();

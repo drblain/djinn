@@ -29,6 +29,8 @@ public:
 
     void create();
 
+    virtual bool stopped() = 0;
+
     virtual void main() = 0;
 
     void join();
@@ -41,6 +43,8 @@ private:
 
 public:
     ThreadWorker(ThreadPool* parent);
+
+    bool stopped();
 
     void main();
 };
