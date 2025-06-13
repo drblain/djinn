@@ -85,7 +85,10 @@ ThreadPool* ThreadPool::GetThreadPool(size_t num_threads_required)
     }
     else
     {
-        the_pool_ = new ThreadPool(num_threads_required);
+        the_pool_ = new ThreadPool(
+            num_threads_required == 0 ?
+            std::thread::hardware_concurrency() :
+            num_threads_required);
     }
 
     return the_pool_;

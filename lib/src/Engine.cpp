@@ -4,6 +4,8 @@
 #include "djinn/System.hpp"
 #include "djinn/Time.hpp"
 
+#include "djinn/sync/Thread.hpp"
+
 using namespace djinn;
 
 Engine::Engine(double tick_rate, uint8_t updates_before_throttle):
@@ -25,6 +27,8 @@ void Engine::run()
 
     TimeStamp t_start;
     TimeDuration t_accum{0};
+
+    ThreadPool* pool = ThreadPool::GetThreadPool();
 
     while (!stopped_)
     {
