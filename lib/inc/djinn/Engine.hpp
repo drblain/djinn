@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+
 #include "djinn/Entity.hpp"
 #include "djinn/System.hpp"
 

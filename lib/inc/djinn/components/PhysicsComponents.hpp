@@ -1,7 +1,5 @@
 #pragma once
 
-#include <array>
-
 #include "djinn/Component.hpp"
 #include "djinn/Time.hpp"
 #include "djinn/components/Mixins.hpp"
@@ -28,6 +26,7 @@ inline Position operator*(const Velocity& lhs, const TimeDuration& rhs)
         lhs.z_ * rhs.s_
     );
 }
+
 inline Position operator*(const TimeDuration& lhs, const Velocity& rhs)
 {
     return rhs * lhs;

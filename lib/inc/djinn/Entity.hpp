@@ -86,13 +86,13 @@ public:
     {
         EntityVec::iterator e_iter = entities_.begin();
 
-        while (e_iter != entities_.end() && !(e_iter->get()->hasComponent<Components>() && ...))
+        while (e_iter != entities_.end() && !(... && e_iter->get()->hasComponent<Components>()))
             ++e_iter;
 
         if (e_iter != entities_.end())
         {
             Entity* e = e_iter->get();
-            fn(*e, *(e->getComponent<Components>()) ...);
+            fn(*e, *(e->getComponent<Components>())...);
         }
     }
 
