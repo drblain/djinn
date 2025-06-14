@@ -2,6 +2,11 @@
 
 using namespace djinn;
 
+KeyT InputSystem::pollInputs()
+{
+
+}
+
 void InputSystem::input()
 {
     // poll

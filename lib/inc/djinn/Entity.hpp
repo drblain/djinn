@@ -82,6 +82,21 @@ public:
     }
 
     template<typename... Components>
+    inline void forFirstWith(EntityComponentFn<Components...>& fn)
+    {
+        EntityVec::iterator e_iter = entities_.begin();
+
+        while (e_iter != entities_.end() && !(e_iter->get()->hasComponent<Components>() && ...))
+            ++e_iter;
+
+        if (e_iter != entities_.end())
+        {
+            Entity* e = e_iter->get();
+            fn(*e, *(e->getComponent<Components>()) ...);
+        }
+    }
+
+    template<typename... Components>
     inline void forEachWith(EntityComponentFn<Components...>& fn)
     {
         for (EntityVec::iterator e_iter = entities_.begin(); e_iter != entities_.end(); ++e_iter)
