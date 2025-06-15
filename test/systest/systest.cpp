@@ -21,7 +21,7 @@ public:
             std::cout << "PrintVelocitySystem: &e: " << &e << ", &v: " << &v << "\n";
         };
 
-        manager_.forEachWith<djinn::Velocity>(fn);
+        emanager_.forEachWith<djinn::Velocity>(fn);
     }
 };
 
@@ -41,7 +41,7 @@ public:
             std::cout << "PrintPositionSystem: &e: " << &e << ", &p: " << &p << "\n";
         };
 
-        manager_.forEachWith<djinn::Position>(fn);
+        emanager_.forEachWith<djinn::Position>(fn);
     }
 };
 

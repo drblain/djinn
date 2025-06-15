@@ -1,0 +1,7 @@
+This project is licensed under the MIT License.
+
+Third-party libraries:
+
+- GLFW (https://www.glfw.org/)
+  License: zlib/libpng license
+  See: external/glfw/LICENSE.txt

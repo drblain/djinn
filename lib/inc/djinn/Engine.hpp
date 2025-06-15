@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "djinn/Context.hpp"
 #include "djinn/Entity.hpp"
 #include "djinn/System.hpp"
 
@@ -10,7 +11,7 @@ namespace djinn
 
 class TimeDuration;
 
-class Engine : public EntityManager
+class Engine : public EntityManager, public ContextManager
 {
 private:
     SystemVec systems_;

@@ -27,7 +27,7 @@ typedef std::vector<SystemId> DependencyVec;
 class System
 {
 protected:
-    EntityManager& manager_;
+    EntityManager& emanager_;
 
     DependencyVec dependencies_;
 
