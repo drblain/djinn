@@ -11,13 +11,14 @@ namespace djinn
 
 class TimeDuration;
 
-class Engine : public EntityManager, public ContextManager
+class Engine : public EntityManager
 {
 private:
     SystemVec systems_;
     double tick_rate_;
     uint8_t updates_before_throttle_;
     bool stopped_;
+    std::unique_ptr<ContextManager> cmanager_;
 
 public:
     Engine(double tick_rate = 60.0, uint8_t updates_before_throttle = 5);
@@ -27,6 +28,16 @@ public:
     void run();
 
     void stop();
+
+    template<typename T, typename...Args>
+    inline T* addContextManager(Args&&... args)
+    {
+        static_assert(std::is_base_of<ContextManager, T>::value, "Template parameter must be of ContextManager type");
+        cmanager_ = std::make_unique<T>(std::forward<Args>(args)...);
+        return dynamic_cast<T*>(cmanager_.get());
+    }
+
+
 
     // add a system to the engine. Assumes no cyclic dependencies exist
     template<typename T, typename... Args>

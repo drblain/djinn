@@ -29,6 +29,7 @@ void Engine::run()
     TimeDuration t_accum{0};
 
     ThreadPool* pool = ThreadPool::GetThreadPool();
+    (void)pool;
 
     while (!stopped_)
     {

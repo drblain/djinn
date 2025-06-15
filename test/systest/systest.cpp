@@ -45,7 +45,7 @@ public:
     }
 };
 
-int main(int argc, char* argv[])
+int main(void)
 {
     djinn::Engine ng;
     djinn::Entity* e1 = ng.addEntity<djinn::Entity>();
@@ -60,8 +60,8 @@ int main(int argc, char* argv[])
     e3->addComponent<djinn::Scale>(1, 1, 2);
     e3->addComponent<djinn::Velocity>(1, 2, 3);
 
-    PrintPositionSystem* pps = ng.addSystem<PrintPositionSystem>(ng);
-    PrintVelocitySystem* pvs = ng.addSystem<PrintVelocitySystem>(ng);
+    (void)ng.addSystem<PrintPositionSystem>(ng);
+    (void)ng.addSystem<PrintVelocitySystem>(ng);
 
     ng.render();
 

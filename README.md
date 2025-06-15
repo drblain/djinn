@@ -14,3 +14,4 @@ A simple template-based Entity-Component-System game engine for a fun little sid
 - [ ] Redefine EntityId, ComponentId, and SystemId using struct{ size_t } to enforce strong typing. (Also add std hash support)
 - [ ] Add an assertion that a System is inserted before all Systems that depend on it
 - [ ] Fix issue where ThreadPool hangs when shutting down even though all threads have stopped
+- [ ] Figure out the best way to add/manage context managers and contexts

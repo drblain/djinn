@@ -43,7 +43,7 @@ public:
     }
 };
 
-int main(int argc, char* argv[])
+int main(void)
 {
     djinn::Engine ng(60, 5);
     ng.addSystem<TestSystem>(ng, "TestSystem1");

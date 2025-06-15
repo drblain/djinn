@@ -25,7 +25,7 @@ public:
     }
 };
 
-int main(int argc, char* argv[])
+int main(void)
 {
     
     djinn::ThreadPool * pool = djinn::ThreadPool::GetThreadPool(4);
