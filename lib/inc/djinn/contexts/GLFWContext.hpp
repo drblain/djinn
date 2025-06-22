@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "djinn/Context.hpp"
 
 class GLFWwindow;
@@ -7,37 +9,44 @@ class GLFWwindow;
 namespace djinn
 {
 
+struct GLFWContextParams : public ContextParams
+{
+    int width_;
+    int height_;
+    std::string title_;
+};
+
 class GLFWContext : public Context
 {
 private:
-    std::unique_ptr<GLFWwindow> window_;
+    GLFWwindow* window_;
 
 public:
-    GLFWContext();
+    GLFWContext(GLFWwindow* window);
 
     ~GLFWContext();
+
+    void pollEvents() override;
 
     void makeCurrent() override;
 
     void swapBuffers() override;
 
+    bool shouldClose() override;
+
+
 };
 
 class GLFWContextManager : public ContextManager
 {
-private:
-    bool init_;
-    GLFWContext* context_;
-
 public:
     GLFWContextManager();
 
     ~GLFWContextManager();
 
-    bool initialize() override;
+    Context* createContext(ContextParams* params) override;
 
-    void pollEvents() override;
-
+    void pollAllEvents() override;
 };
 
 };

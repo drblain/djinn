@@ -1,58 +1,52 @@
+#include <cassert>
 #include <GLFW/glfw3.h>
 
 #include "djinn/contexts/GLFWContext.hpp"
 
 using namespace djinn;
 
-GLFWContext::GLFWContext()
+GLFWContext::GLFWContext(GLFWwindow* window):
+    window_(window)
 {
-    /* initialize window_ with glfwCreateWindow */
 }
 
-GLFWContext::~GLFWContext()
+GLFWContextManager::GLFWContextManager()
 {
-    glfwDestroyWindow(window_.get());
-}
-
-void GLFWContext::makeCurrent()
-{
-    glfwMakeContextCurrent(window_.get());
-}
-
-void GLFWContext::swapBuffers()
-{
-    glfwSwapBuffers(window_.get());
-}
-
-GLFWContextManager::GLFWContextManager():
-    init_(false),
-    context_(nullptr)
-{
-
+    assert((GLFW_TRUE == glfwInit()) && "Unable to initialize GLFW");
 }
 
 GLFWContextManager::~GLFWContextManager()
 {
-    if (context_)
-        delete context_;
-        context_ = nullptr;
+    for(ContextVec::iterator c_iter = contexts_.begin(); c_iter != contexts_.end(); ++c_iter)
+    {
+        // make sure context is not current
+    }
 
-    if (init_)
-        glfwTerminate();
+    glfwTerminate();
 }
 
-bool GLFWContextManager::initialize()
+Context* GLFWContextManager::createContext(ContextParams* params)
 {
-    if (!init_)
-        init_ = 0 == glfwInit();
+    Context* context = nullptr;
+    GLFWContextParams* glfw_params = nullptr;
 
-    if (init_)
-        context_ = new GLFWContext();
+    assert((glfw_params = dynamic_cast<GLFWContextParams*>(params)) && "ContextParams must be of type GLFWContextParams");
 
-    return init_;
-}
+    GLFWwindow* window = 
+        glfwCreateWindow(
+            glfw_params->width_,
+            glfw_params->height_,
+            glfw_params->title_.c_str(),
+            /* GLFWMonitor */ NULL,
+            /* GLFWWindow */ NULL);
 
-void GLFWContextManager::pollEvents()
-{
-    glfwPollEvents();
+    if (window)
+    {
+        glfwMakeContextCurrent(window);
+        // glfwSwapInterval - 1 for vsync, 0 for not
+        contexts_.push_back(std::make_unique<GLFWContext>(window));
+        context = contexts_.back().get();
+    }
+
+    return context;
 }
