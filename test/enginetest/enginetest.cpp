@@ -29,7 +29,7 @@ public:
         ++num_inputs_;
     }
 
-    void update(const djinn::TimeDuration& deltaTime) override
+    void update(const djinn::TimeDuration&) override
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(8));
 

@@ -3,8 +3,6 @@ set(djinn_srcs
     ${CMAKE_CURRENT_SOURCE_DIR}/src/System.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Time.cpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/contexts/GLFWContext.cpp
-
     ${CMAKE_CURRENT_SOURCE_DIR}/src/entities/PlayerEntity.cpp
     
     ${CMAKE_CURRENT_SOURCE_DIR}/src/sync/Mutex.cpp
